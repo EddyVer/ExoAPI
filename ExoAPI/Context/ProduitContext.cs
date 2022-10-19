@@ -9,24 +9,22 @@ public class ProduitContext
 
     public List<Product> FonctionGet(string fonction)
     {
-       List<Product> result = Products.FindAll(delegate(Product product) 
-           { return product.Usage == fonction; });
-       return result;
+        return Products.Where(x => x.Usage == fonction).ToList();
     }
 
-    public void NewProduct(Product product)
+    public void NewProduct(ProductDto productDto)
     {
-        product.Id = Products.Count + 1;
-        Products.Add(product);
+        productDto.Id = ProductDtos.Count + 1;
+        ProductDtos.Add(productDto);
     }
 
-    public void EditProduct(int id, Product product)
+    public void EditProduct(int id, ProductDto productDto)
     {
         var mProduct = Products.First(x => x.Id == id);
-        mProduct.Origin = product.Origin;
-        mProduct.Name = product.Name;
-        mProduct.Quantite = product.Quantite;
-        mProduct.Usage = product.Usage;
+        mProduct.Origin = productDto.Origin;
+        mProduct.Name = productDto.Name;
+        mProduct.Quantite = productDto.Quantite;
+        mProduct.Usage = productDto.Usage;
 
     }
     
@@ -62,7 +60,7 @@ public class ProduitContext
         {
             Id = 4,
             Origin = "China",
-            Name = "",
+            Name = "UnTrucUtile",
             Quantite = 5,
             Usage = "Informatique"
         });

@@ -33,16 +33,16 @@ public class ProductsController : ControllerBase
     [HttpPost("addProduct")]
     public IActionResult AddProduit([FromBody] ProductDto productDto)
     {
-        Product product = _mapper.Map<Product>(productDto);
-        _context.NewProduct(product);
-        return Ok(product);
+        _context.NewProduct(productDto);
+        _mapper.Map<Product>(productDto);
+        return Ok(productDto);
     }
 
     [HttpPut("EditProduct/{id}")]
     public IActionResult ProductEdit(int id, ProductDto productDto)
     {
-        Product product = _mapper.Map<Product>(productDto);
-        _context.EditProduct(id,product);
-        return Ok(product);
+        _context.EditProduct(id,productDto);
+        _mapper.Map<Product>(productDto);
+        return Ok(productDto);
     }
 }
