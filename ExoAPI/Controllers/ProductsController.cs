@@ -3,6 +3,7 @@ using ExoAPI.Context;
 using ExoAPI.Dto;
 using ExoAPI.Entitie;
 using ExoAPI.Mapping;
+using ExoAPI.Type;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ExoAPI.Controllers;
@@ -25,7 +26,7 @@ public class ProductsController : ControllerBase
     }
 
     [HttpGet("GetByUsage/{usage}")]
-    public IActionResult GetFonction(string usage)
+    public IActionResult GetFonction(Usages usage)
     {
         return Ok( _mapper.Map<List<ProductDto>>( _context.FonctionGet(usage)));
     }
@@ -33,16 +34,19 @@ public class ProductsController : ControllerBase
     [HttpPost("addProduct")]
     public IActionResult AddProduit([FromBody] ProductDto productDto)
     {
-        Product product = _mapper.Map<Product>(productDto);
-        _context.NewProduct(product);
-        return Ok(product);
+        _context.NewProduct(productDto);
+        return Ok(productDto);
     }
-
+    [HttpPost("addType")]
+    public IActionResult AddType([FromBody]UsagesCollectionDto dto)
+    {
+        _context.NewType(dto);
+        return Ok(dto);
+    }
     [HttpPut("EditProduct/{id}")]
     public IActionResult ProductEdit(int id, ProductDto productDto)
     {
-        Product product = _mapper.Map<Product>(productDto);
-        _context.EditProduct(id,product);
-        return Ok(product);
+        _context.EditProduct(id,productDto);
+        return Ok(productDto);
     }
 }

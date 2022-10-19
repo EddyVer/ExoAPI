@@ -1,3 +1,5 @@
+using ExoAPI.Type;
+
 namespace ExoAPI.Entitie;
 
 public class Product
@@ -6,5 +8,5 @@ public class Product
     public string Origin { get; set; }
     public string Name { get; set; }
     public int Quantite  { get; set; }
-    public string Usage { get; set; }
+    public Usages Usage { get; set; }
 }

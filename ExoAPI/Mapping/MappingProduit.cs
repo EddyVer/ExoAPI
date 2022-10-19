@@ -9,5 +9,6 @@ public class MappingProduit : Profile
     public MappingProduit()
     {
         CreateMap<Product, ProductDto>().ReverseMap();
+        CreateMap<UsagesCollection, UsagesCollectionDto>().ReverseMap();
     }
 }
