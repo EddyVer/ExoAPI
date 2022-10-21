@@ -1,3 +1,5 @@
+using ExoAPI.Type;
+
 namespace ExoAPI.Dto;
 
 public class ProductDto
@@ -6,5 +8,5 @@ public class ProductDto
     public string Origin { get; set; }
     public string Name { get; set; }
     public int Quantite  { get; set; }
-    public string Usage { get; set; }
+    public Usages Usage { get; set; }
 }

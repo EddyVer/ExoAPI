@@ -1,35 +1,60 @@
 namespace ExoAPI.Context;
 using ExoAPI.Entitie;
 using ExoAPI.Dto;
+using AutoMapper;
+using ExoAPI.Type;
+
+namespace ExoAPI.Context;
+
 public class ProduitContext
 {
+    private readonly IMapper _mapper;
     public List<Product> Products { get; set; }
     public List<ProductDto> ProductDtos { get; set; }
     public List<Product> list() => Products;
+    public List<UsagesCollection> Collects { get; set; }
+    public List<UsagesCollectionDto> CollectDtos { get; set; }
 
-    public List<Product> FonctionGet(string fonction)
+    public List<Product> FonctionGet(Usages usage)
     {
-        return Products.Where(x => x.Usage == fonction).ToList();
+        return Products.Where(x => x.Usage == usage).ToList();
     }
 
     public void NewProduct(ProductDto productDto)
     {
-        productDto.Id = ProductDtos.Count + 1;
-        ProductDtos.Add(productDto);
+        Product product = _mapper.Map<Product>(productDto);
+        product.Id = Products.Count + 1;
+        Products.Add(product);
+    }
+
+    public void NewType(UsagesCollectionDto dto)
+    {
+        dto.Id = CollectDtos.Count + 1 ;
+        UsagesCollection usagesCollection = _mapper.Map<UsagesCollection>(dto);
+        Collects.Add(usagesCollection);
     }
 
     public void EditProduct(int id, ProductDto productDto)
     {
         var mProduct = Products.First(x => x.Id == id);
-        mProduct.Origin = productDto.Origin;
-        mProduct.Name = productDto.Name;
-        mProduct.Quantite = productDto.Quantite;
-        mProduct.Usage = productDto.Usage;
-
+        //mProduct.Origin = productDto.Origin;
+        //mProduct.Name = productDto.Name;
+        ////mProduct.Quantite = productDto.Quantite;
+        ////string value = productDto.Usage;
+        ////if(Enum.IsDefined(typeof(Usages),value) == false )
+        ////{
+        ////    int total = Enum.GetValues(typeof(Usages)).Length;
+        ////    Dictionary<int,string> addEnum = new Dictionary<int,string>();
+        ////    addEnum.Add(total,productDto.Usage);
+           
+        ////}
+        //mProduct.Usage = productDto.Usage;
+        mProduct = _mapper.Map<Product>(productDto);
     }
     
-    public ProduitContext()
+    public ProduitContext(IMapper mapper)
     {
+        _mapper = mapper;
         Products = new List<Product>();
         Products.Add(new Product()
         {
@@ -37,7 +62,7 @@ public class ProduitContext
             Origin = "Frensh",
             Name = "Cable Eternet",
             Quantite = 25,
-            Usage = "Informatique"
+            Usage = Usages.Informatique
         });
         Products.Add(new Product()
         {
@@ -45,7 +70,7 @@ public class ProduitContext
             Origin = "Belguim",
             Name = "Grafique Card",
             Quantite = 60,
-            Usage = "Informatique"
+            Usage =(Usages)0
         });
         Products.Add(new Product()
         {
@@ -53,8 +78,8 @@ public class ProduitContext
             Origin = "Taiwan",
             Name = "Trottinette Electric",
             Quantite = 4,
-            Usage = "Transport"
-            
+            Usage = Usages.Transport
+
         });
         Products.Add(new Product()
         {
@@ -62,7 +87,7 @@ public class ProduitContext
             Origin = "China",
             Name = "UnTrucUtile",
             Quantite = 5,
-            Usage = "Informatique"
+            Usage = Usages.Recherche
         });
     }
 }
