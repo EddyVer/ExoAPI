@@ -1,10 +1,9 @@
 ﻿namespace ExoAPI.Type
 {
     public enum Usages{
-
-        Informatique,
-        Transport,
-        Recherche
+        Informatique = 0,
+        Transport = 1,
+        Recherche = 2
     }
 }
 
