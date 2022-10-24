@@ -1,7 +1,6 @@
 using ExoAPI.Type;
 
 namespace ExoAPI.Dto;
-
 public class ProductDto
 {
     public int Id { get; set; }

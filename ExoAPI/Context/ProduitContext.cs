@@ -1,8 +1,7 @@
-namespace ExoAPI.Context;
-using ExoAPI.Entitie;
 using ExoAPI.Dto;
-using AutoMapper;
+using ExoAPI.Entitie;
 using ExoAPI.Type;
+using AutoMapper;
 
 namespace ExoAPI.Context;
 
