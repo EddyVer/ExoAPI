@@ -14,6 +14,7 @@ builder.Services.AddSingleton<ProduitContext>();
 builder.Services.AddAutoMapper(cfg => { cfg.AddProfile<MappingProduit>(); });
 var app = builder.Build();
 
+app.UseCors(b => b.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {

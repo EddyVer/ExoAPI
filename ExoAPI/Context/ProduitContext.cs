@@ -14,10 +14,7 @@ public class ProduitContext
     public List<UsagesCollection> Collects { get; set; }
     public List<UsagesCollectionDto> CollectDtos { get; set; }
 
-    public List<Product> FonctionGet(Usages usage)
-    {
-        return Products.Where(x => x.Usage == usage).ToList();
-    }
+    public Product FonctionGet(int id) =>  Products.First(x => x.Id == id);
 
     public void NewProduct(ProductDto productDto)
     {
@@ -33,22 +30,16 @@ public class ProduitContext
         Collects.Add(usagesCollection);
     }
 
-    public void EditProduct(int id, ProductDto productDto)
+    public Product EditProduct(int id, ProductDto productDto)
     {
         var mProduct = Products.First(x => x.Id == id);
-        //mProduct.Origin = productDto.Origin;
-        //mProduct.Name = productDto.Name;
-        ////mProduct.Quantite = productDto.Quantite;
-        ////string value = productDto.Usage;
-        ////if(Enum.IsDefined(typeof(Usages),value) == false )
-        ////{
-        ////    int total = Enum.GetValues(typeof(Usages)).Length;
-        ////    Dictionary<int,string> addEnum = new Dictionary<int,string>();
-        ////    addEnum.Add(total,productDto.Usage);
-           
-        ////}
-        //mProduct.Usage = productDto.Usage;
         mProduct = _mapper.Map<Product>(productDto);
+        mProduct.Origin = productDto.Origin;
+        mProduct.Name = productDto.Name;
+        mProduct.Quantite = productDto.Quantite;
+        mProduct.Usage = productDto.Usage;
+        return mProduct;
+
     }
     
     public ProduitContext(IMapper mapper)
@@ -69,7 +60,7 @@ public class ProduitContext
             Origin = "Belguim",
             Name = "Grafique Card",
             Quantite = 60,
-            Usage =(Usages)0
+            Usage =(Usages)1
         });
         Products.Add(new Product()
         {

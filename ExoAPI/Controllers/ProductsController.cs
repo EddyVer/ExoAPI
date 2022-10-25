@@ -25,10 +25,10 @@ public class ProductsController : ControllerBase
         return Ok(_mapper.Map<List<ProductDto>>(_context.list()));
     }
 
-    [HttpGet("GetByUsage/{usage}")]
-    public IActionResult GetFonction(Usages usage)
+    [HttpGet("GetById/{id}")]
+    public IActionResult GetProductID(int id)
     {
-        return Ok( _mapper.Map<List<ProductDto>>( _context.FonctionGet(usage)));
+        return Ok( _mapper.Map<ProductDto>( _context.FonctionGet(id)));
     }
 
     [HttpPost("addProduct")]

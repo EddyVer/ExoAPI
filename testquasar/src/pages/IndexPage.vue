@@ -1,49 +1,100 @@
 <template>
+  <div class="row">
+    <q-input placeholder="Origin" v-model="newData.origin" />
+    <q-input placeholder="Name" v-model="newData.name" />
+    <q-input placeholder="Quantity" v-model="newData.quantite" />
+    <q-select
+      placeholder="Usage"
+      emit-value
+      v-model="newData.usage"
+      :options="options"
+    />
+    <q-btn label="Ajouter" color="primary" @click="addData" />
+  </div>
+  <div class="row">
+    <q-input type="number" v-model="dataId" />
+    <q-btn label="Recherche" color="primary" @click="getDataById" />
+  </div>
+  <div class="row" id="test">
+    <q-input v-model="modifData.origin" />
+    <q-input v-model="modifData.name" />
+    <q-input v-model="modifData.quantite" />
+    <q-input v-model="modifData.usage" />
+    <q-btn label="Modif" color="primary" @click="modifProduct" />
+  </div>
   <q-page class="row items-center justify-evenly">
-    <example-component
-      title="Example component"
-      active
-      :todos="todos"
-      :meta="meta"
-    ></example-component>
+    {{ datas }}
   </q-page>
 </template>
 
 <script lang="ts">
-import { Todo, Meta } from 'components/models';
-import ExampleComponent from 'components/ExampleComponent.vue';
 import { defineComponent, ref } from 'vue';
+import { ProductDto, Usages } from 'src/models/product';
 
 export default defineComponent({
   name: 'IndexPage',
-  components: { ExampleComponent },
+  created() {
+    void this.firstApiCall();
+  },
   setup() {
-    const todos = ref<Todo[]>([
-      {
-        id: 1,
-        content: 'ct1'
-      },
-      {
-        id: 2,
-        content: 'ct2'
-      },
-      {
-        id: 3,
-        content: 'ct3'
-      },
-      {
-        id: 4,
-        content: 'ct4'
-      },
-      {
-        id: 5,
-        content: 'ct5'
-      }
-    ]);
-    const meta = ref<Meta>({
-      totalCount: 1200
-    });
-    return { todos, meta };
-  }
+    return {
+      datas: ref<ProductDto[]>([]),
+      newData: ref<ProductDto>({
+        id: 0,
+        name: '',
+        origin: '',
+        quantite: 0,
+        usage: Usages.Autre,
+      }),
+      options: [
+        {
+          label: 'Autre',
+          value: Usages.Autre,
+        },
+        {
+          label: 'Transport',
+          value: Usages.Transport,
+        },
+        {
+          label: 'Informatique',
+          value: Usages.Informatique,
+        },
+        {
+          label: 'Recherche',
+          value: Usages.Recherche,
+        },
+      ],
+      modifData: ref<ProductDto>({
+        id: 0,
+        name: '',
+        origin: '',
+        quantite: 0,
+        usage: Usages.Autre,
+      }),
+      dataId: 0,
+      respDataId: ref<ProductDto[]>([]),
+    };
+  },
+  methods: {
+    async firstApiCall() {
+      const response = await this.$api.get('/products/ShowStock');
+      this.datas = response.data;
+    },
+    async addData() {
+      const resp = await this.$api.post('/products/addProduct', this.newData);
+      return resp;
+    },
+    async getDataById() {
+      const resp = await this.$api.get(`products/GetById/${this.dataId}`);
+      this.modifData = resp.data as ProductDto;
+    },
+    async modifProduct() {
+      const resp = await this.$api.put(
+        `/Products/EditProduct/${this.modifData.id}`,
+        this.modifData
+      );
+      return resp;
+    },
+  },
 });
 </script>
