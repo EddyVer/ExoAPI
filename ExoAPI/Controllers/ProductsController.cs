@@ -49,4 +49,11 @@ public class ProductsController : ControllerBase
         _context.EditProduct(id,productDto);
         return Ok(productDto);
     }
+
+    [HttpDelete("deleteProduct/{id}")]
+    public IActionResult DelProduct(int id)
+    {
+        _context.removeProduct(id);
+        return Ok();
+    }
 }

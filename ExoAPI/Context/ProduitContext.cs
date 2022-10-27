@@ -39,7 +39,13 @@ public class ProduitContext
         mProduct.Quantite = productDto.Quantite;
         mProduct.Usage = productDto.Usage;
         return mProduct;
+    }
 
+    public void removeProduct(int id)
+    {
+        var mproduct = Products.First(x => x.Id == id);
+        Products.Remove(mproduct);
+        _mapper.Map<List<ProductDto>>(Products);
     }
     
     public ProduitContext(IMapper mapper)
