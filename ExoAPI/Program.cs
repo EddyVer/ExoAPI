@@ -11,7 +11,8 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddSingleton<ProduitContext>();
-builder.Services.AddAutoMapper(cfg => { cfg.AddProfile<MappingProduit>(); });
+builder.Services.AddSingleton<UsersContext>();
+builder.Services.AddAutoMapper(cfg => { cfg.AddProfile<MappingData>(); });
 var app = builder.Build();
 
 app.UseCors(b => b.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());

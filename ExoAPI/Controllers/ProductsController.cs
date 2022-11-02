@@ -18,30 +18,21 @@ public class ProductsController : ControllerBase
         _mapper = mapper;
         _context = context;
     }
-
     [HttpGet("ShowStock")]
     public IActionResult ShowStock()
     {
         return Ok(_mapper.Map<List<ProductDto>>(_context.list()));
     }
-
     [HttpGet("GetById/{id}")]
     public IActionResult GetProductID(int id)
     {
         return Ok( _mapper.Map<ProductDto>( _context.FonctionGet(id)));
     }
-
     [HttpPost("addProduct")]
     public IActionResult AddProduit([FromBody] ProductDto productDto)
     {
         _context.NewProduct(productDto);
         return Ok(productDto);
-    }
-    [HttpPost("addType")]
-    public IActionResult AddType([FromBody]UsagesCollectionDto dto)
-    {
-        _context.NewType(dto);
-        return Ok(dto);
     }
     [HttpPut("EditProduct/{id}")]
     public IActionResult ProductEdit(int id, ProductDto productDto)
@@ -49,11 +40,11 @@ public class ProductsController : ControllerBase
         _context.EditProduct(id,productDto);
         return Ok(productDto);
     }
-
     [HttpDelete("deleteProduct/{id}")]
     public IActionResult DelProduct(int id)
     {
-        _context.removeProduct(id);
+        _context.ProductDelete(id);
         return Ok();
     }
+    
 }

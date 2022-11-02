@@ -2,7 +2,7 @@
   <div class="row">
     <q-input v-model="modif.origin" />
     <q-input v-model="modif.name" />
-    <q-input v-model="modif.quantite" />
+    <q-input type="number" v-model="modif.quantite" />
     <q-select
       placeholder="Usage"
       emit-value
@@ -17,13 +17,14 @@ import { defineComponent, ref } from 'vue';
 import { ProductDto, Usages } from 'src/models/product';
 export default defineComponent({
   name: 'formModif',
-  props: ['modifData'],
+  props: {
+    modifData: {
+      type: Object as () => ProductDto,
+      required: true,
+    },
+  },
   created() {
-    this.modif.id = this.modifData.id;
-    this.modif.origin = this.modifData.origin;
-    this.modif.name = this.modifData.name;
-    this.modif.quantite = this.modifData.quantite;
-    this.modif.usage = this.modifData.usage;
+    this.modif = this.modifData;
   },
   setup() {
     return {
@@ -56,15 +57,13 @@ export default defineComponent({
   },
   methods: {
     async modifProduct() {
+      if (!this.modif) {
+        return;
+      }
       const resp = await this.$api.put(
         `/Products/EditProduct/${this.modif.id}`,
         this.modif
       );
-      this.modif.id = 0;
-      this.modif.name = '';
-      this.modif.origin = '';
-      this.modif.quantite = 0;
-      this.modif.usage = 0;
       return resp;
     },
   },

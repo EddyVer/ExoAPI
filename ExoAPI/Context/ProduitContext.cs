@@ -13,41 +13,35 @@ public class ProduitContext
     public List<Product> list() => Products;
     public List<UsagesCollection> Collects { get; set; }
     public List<UsagesCollectionDto> CollectDtos { get; set; }
-
     public Product FonctionGet(int id) =>  Products.First(x => x.Id == id);
-
     public void NewProduct(ProductDto productDto)
     {
+        var lastProduct = Products.Last();
         Product product = _mapper.Map<Product>(productDto);
-        product.Id = Products.Count + 1;
+        product.Id = lastProduct.Id + 1;
         Products.Add(product);
     }
-
-    public void NewType(UsagesCollectionDto dto)
-    {
-        dto.Id = CollectDtos.Count + 1 ;
-        UsagesCollection usagesCollection = _mapper.Map<UsagesCollection>(dto);
-        Collects.Add(usagesCollection);
-    }
-
-    public Product EditProduct(int id, ProductDto productDto)
+    // public void NewType(UsagesCollectionDto dto)
+    // {
+    //     var last = Products.Last();
+    //     dto.Id = last.Id +1  ;
+    //     UsagesCollection usagesCollection = _mapper.Map<UsagesCollection>(dto);
+    //     Collects.Add(usagesCollection);
+    // }
+    public void EditProduct(int id, ProductDto productDto)
     {
         var mProduct = Products.First(x => x.Id == id);
-        mProduct = _mapper.Map<Product>(productDto);
         mProduct.Origin = productDto.Origin;
         mProduct.Name = productDto.Name;
         mProduct.Quantite = productDto.Quantite;
         mProduct.Usage = productDto.Usage;
-        return mProduct;
     }
-
-    public void removeProduct(int id)
+    public void ProductDelete(int id)
     {
         var mproduct = Products.First(x => x.Id == id);
         Products.Remove(mproduct);
         _mapper.Map<List<ProductDto>>(Products);
     }
-    
     public ProduitContext(IMapper mapper)
     {
         _mapper = mapper;
