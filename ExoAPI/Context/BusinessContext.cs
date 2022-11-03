@@ -6,7 +6,7 @@ namespace ExoAPI.Context
     public class BusinessContext : DbContext
     {
         public DbSet<Product>? Products { get; set; }
-        public DbSet<Entrepot>? Entrepots { get; set; }
+       // public DbSet<Entrepot>? Entrepots { get; set; }
         public BusinessContext(DbContextOptions options, IConfiguration configuration) : base(options)
         {
             _configuration = configuration;

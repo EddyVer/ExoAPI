@@ -13,8 +13,8 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddSingleton<ProduitContext>();
 builder.Services.AddSingleton<UsersContext>();
-builder.Services.AddSingleton<EntrepotContext>();
 
+//builder.Services.AddDbContext<EntrepotContext>();
 builder.Services.AddDbContext<BusinessContext>();
 
 builder.Services.AddAutoMapper(cfg => { cfg.AddProfile<MappingData>(); });
