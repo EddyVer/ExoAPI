@@ -2,12 +2,14 @@ using ExoAPI.Dto;
 using ExoAPI.Entitie;
 using ExoAPI.Type;
 using AutoMapper;
+//using ExoAPI.MySqL;
 
 namespace ExoAPI.Context;
 
 public class ProduitContext
 {
     private readonly IMapper _mapper;
+    //private readonly ConnectBDD _bdd;
     public List<Product> Products { get; set; }
     public List<ProductDto> ProductDtos { get; set; }
     public List<Product> list() => Products;
@@ -16,10 +18,19 @@ public class ProduitContext
     public Product FonctionGet(int id) =>  Products.First(x => x.Id == id);
     public void NewProduct(ProductDto productDto)
     {
-        var lastProduct = Products.Last();
+        Product lastProduct = Products.Last();
         Product product = _mapper.Map<Product>(productDto);
         product.Id = lastProduct.Id + 1;
         Products.Add(product);
+        //try
+        //{
+        //    _bdd.Connect();
+        //    _bdd.AddData(product);
+        //}
+        //catch (Exception e)
+        //{
+        //    Console.WriteLine(e.Message);
+        //}
     }
     // public void NewType(UsagesCollectionDto dto)
     // {
@@ -30,7 +41,7 @@ public class ProduitContext
     // }
     public void EditProduct(int id, ProductDto productDto)
     {
-        var mProduct = Products.First(x => x.Id == id);
+        Product mProduct = Products.First(x => x.Id == id);
         mProduct.Origin = productDto.Origin;
         mProduct.Name = productDto.Name;
         mProduct.Quantite = productDto.Quantite;
@@ -38,7 +49,7 @@ public class ProduitContext
     }
     public void ProductDelete(int id)
     {
-        var mproduct = Products.First(x => x.Id == id);
+        Product mproduct = Products.First(x => x.Id == id);
         Products.Remove(mproduct);
         _mapper.Map<List<ProductDto>>(Products);
     }

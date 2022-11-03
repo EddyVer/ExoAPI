@@ -1,10 +1,10 @@
 <template>
-  <q-div>
+  <!-- <q-div>
     <q-input v-model="name" />
     <q-input type="password" v-model="password" />
     <q-btn label="Login" @click="getUser"></q-btn>
-  </q-div>
-  <q-div v-if="user?.grade == 0">
+  </q-div> -->
+  <q-div>
     <q-btn @click="show">form Add Product</q-btn>
     <div>
       <form-data v-if="formNewProduct"></form-data>

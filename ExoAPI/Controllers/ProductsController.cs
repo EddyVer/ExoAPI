@@ -13,38 +13,55 @@ public class ProductsController : ControllerBase
 {
     private readonly IMapper _mapper;
     private readonly ProduitContext _context;
-    public ProductsController(ProduitContext context, IMapper mapper)
+    private readonly BusinessContext _businessContext;
+    public ProductsController(ProduitContext context, IMapper mapper, BusinessContext businessContext)
     {
         _mapper = mapper;
         _context = context;
+        _businessContext = businessContext;
     }
+
     [HttpGet("ShowStock")]
     public IActionResult ShowStock()
     {
-        return Ok(_mapper.Map<List<ProductDto>>(_context.list()));
+        return Ok(_mapper.Map<List<ProductDto>>(_businessContext.Products.ToList()));
     }
     [HttpGet("GetById/{id}")]
     public IActionResult GetProductID(int id)
     {
-        return Ok( _mapper.Map<ProductDto>( _context.FonctionGet(id)));
+        return Ok(_mapper.Map<ProductDto>(_businessContext.Products.First(x=> x.Id==id)));
     }
     [HttpPost("addProduct")]
     public IActionResult AddProduit([FromBody] ProductDto productDto)
-    {
-        _context.NewProduct(productDto);
+    {   
+        Product product = _mapper.Map<Product>(productDto);
+        _businessContext.Products.Add(product);
+        _businessContext.SaveChanges();
+        //_context.NewProduct(productDto);
         return Ok(productDto);
     }
     [HttpPut("EditProduct/{id}")]
     public IActionResult ProductEdit(int id, ProductDto productDto)
     {
-        _context.EditProduct(id,productDto);
+        Product product = _mapper.Map<Product>(productDto);
+        //Product mProduct = _businessContext.Products.First(x => x.Id == id);
+        //mProduct.Origin = product.Origin;
+        //mProduct.Name = product.Name;
+        //mProduct.Quantite = product.Quantite;
+        //mProduct.Usage = product.Usage;
+        _businessContext.Products.Update(product);
+        _businessContext.SaveChanges();
+        //_context.EditProduct(id,productDto);
         return Ok(productDto);
     }
     [HttpDelete("deleteProduct/{id}")]
     public IActionResult DelProduct(int id)
     {
-        _context.ProductDelete(id);
-        return Ok();
+        Product product = _businessContext.Products.First(x => x.Id == id);
+        _businessContext.Products.Remove(product);
+        _businessContext.SaveChanges();
+        //_context.ProductDelete(id);
+        return Ok(_mapper.Map<List<ProductDto>>(_businessContext.Products.ToList()));
     }
     
 }
