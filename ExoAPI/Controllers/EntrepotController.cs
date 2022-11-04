@@ -22,33 +22,68 @@ namespace ExoAPI.Controllers
         [HttpGet("ShowEntrepot")]
         public IActionResult ShowEntrepot()
         {
-            return Ok(_mapper.Map<List<EntreportDto>>(_businessContext.Entrepots.Include(x => x.products).ToList()));
+            return Ok(_mapper.Map<List<EntrepotDto>>(_businessContext.Entrepots.Include(x => x.Products).ToList()));
         }
         [HttpGet("ById/{id}")]
         public IActionResult ShowById(int id)
         {
-            return Ok(_mapper.Map<EntreportDto>(_businessContext.Entrepots.First(x => x.Id == id)));
+            return Ok(_mapper.Map<EntrepotDto>(_businessContext.Entrepots.Include(x=>x.Products).First(x => x.Id == id)));
         }
         [HttpGet("ByProduct/{name}")]
         public IActionResult GetEntrepotByProduct(string name)
         {
-            return Ok(_mapper.Map<List<EntreportDto>>(_businessContext.Entrepots.Include(x => x.products).Where(x => x.Name == name).ToList()));
+            return Ok(_mapper.Map<List<EntrepotDto>>(_businessContext.Entrepots.Include(x => x.Products).Where(x => x.Name == name).ToList()));
         }
         [HttpPost("AddEntrepot")]
-        public IActionResult AddEntrepot([FromBody] EntreportDto entreportDto)
+        public IActionResult AddEntrepot([FromBody] EntrepotDto entrepotDto)
         {
-            Entrepot entrepot = _mapper.Map<Entrepot>(entreportDto);
+            Entrepot entrepot = _mapper.Map<Entrepot>(entrepotDto);
             _businessContext.Entrepots.Add(entrepot);
             _businessContext.SaveChanges();
-            return Ok(entreportDto);
+            return Ok(entrepotDto);
         }
-        [HttpPut("ModifEntrepot/{id}")]
-        public IActionResult ModifEntrepot(int id, [FromBody] EntreportDto entreportDto)
+        [HttpPut("AddProductEntrepot/{id}")]
+        public IActionResult Addproduct(int id, [FromBody] ProductDto productDto)
         {
-            Entrepot entrepot = _mapper.Map<Entrepot>(entreportDto);
+            Product product = _mapper.Map<Product>(productDto);
+            Entrepot entrepot = _businessContext.Entrepots.Include(x=>x.Products).First(x => x.Id == id);
+            if (entrepot.Products == null)
+            {
+                entrepot.Products = new List<Product>();
+            }
+            entrepot.Products.Add(product);
             _businessContext.Entrepots.Update(entrepot);
             _businessContext.SaveChanges();
-            return Ok(entreportDto);
+            EntrepotDto entrepotDto = _mapper.Map<EntrepotDto>(entrepot);
+            return Ok(entrepotDto);
+        }
+
+        [HttpPut("modifProductByEntrepot/{idEntrepot}/{idProduct}")]
+        public IActionResult ProductModif(int idProduct,int idEntrepot, ProductDto productDto)
+        {
+            Product product = _mapper.Map<Product>(productDto);
+            Entrepot entrepot = _businessContext.Entrepots.Include(x => x.Products).First(x => x.Id == idEntrepot);
+            Product productEntrepot = entrepot.Products.First(x => x.Id == idProduct);
+            productEntrepot.Origin = product.Origin;
+            productEntrepot.Name = product.Name;
+            productEntrepot.Quantite = product.Quantite;
+            productEntrepot.Usage = product.Usage;
+            _businessContext.Entrepots.Update(entrepot);
+            _businessContext.SaveChanges();
+            return Ok(_mapper.Map<List<EntrepotDto>>(entrepot));
+        }
+
+        [HttpDelete("deleteProduct/{idEntrepot}/{idProduct}")]
+        public IActionResult DelProduct(int idEntrepot,int idProduct)
+        {
+            Entrepot entrepot = _businessContext.Entrepots.Include(x => x.Products).First(x => x.Id == idEntrepot);
+            Product product = entrepot.Products.First(x => x.Id == idProduct);
+            entrepot.Products.Remove(product);
+            _businessContext.Products.Remove(product);
+            _businessContext.Entrepots.Update(entrepot);
+            _businessContext.SaveChanges();
+            EntrepotDto entrepotDto = _mapper.Map<EntrepotDto>(entrepot);
+            return Ok(entrepotDto);
         }
         [HttpDelete("DeleteEntrepot/{id}")]
         public IActionResult DeleteEntrepot(int id)
@@ -56,7 +91,7 @@ namespace ExoAPI.Controllers
            Entrepot entrepot = _businessContext.Entrepots.First(x => x.Id == id);
             _businessContext.Entrepots.Remove(entrepot);
             _businessContext.SaveChanges();
-            return Ok(_mapper.Map<List<ProductDto>>(_businessContext.Products.ToList()));
+            return Ok(_mapper.Map<List<EntrepotDto>>(_businessContext.Entrepots.ToList()));
         }
     }
     

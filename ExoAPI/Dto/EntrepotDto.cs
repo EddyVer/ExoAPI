@@ -2,7 +2,7 @@
 
 namespace ExoAPI.Dto
 {
-    public class EntreportDto
+    public class EntrepotDto
     {
         public int Id { get; set; }
         public string Name { get; set; }

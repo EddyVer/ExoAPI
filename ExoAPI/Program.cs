@@ -13,7 +13,6 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddSingleton<ProduitContext>();
 builder.Services.AddSingleton<UsersContext>();
-//builder.Services.AddSingleton<EntrepotContext>();
 
 builder.Services.AddDbContext<BusinessContext>();
 
