@@ -70,16 +70,42 @@ namespace ExoAPI.Migrations
                     b.ToTable("Products");
                 });
 
+            modelBuilder.Entity("ExoAPI.Entitie.User", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<int>("Grade")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<byte[]>("PasswordHash")
+                        .IsRequired()
+                        .HasColumnType("longblob");
+
+                    b.Property<byte[]>("passwordSalt")
+                        .IsRequired()
+                        .HasColumnType("longblob");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Users");
+                });
+
             modelBuilder.Entity("ExoAPI.Entitie.Product", b =>
                 {
                     b.HasOne("ExoAPI.Entitie.Entrepot", null)
-                        .WithMany("products")
+                        .WithMany("Products")
                         .HasForeignKey("EntrepotId");
                 });
 
             modelBuilder.Entity("ExoAPI.Entitie.Entrepot", b =>
                 {
-                    b.Navigation("products");
+                    b.Navigation("Products");
                 });
 #pragma warning restore 612, 618
         }

@@ -16,11 +16,11 @@ namespace ExoAPI.Controllers
     public class UsersController : Controller
     {
         private readonly IMapper _mapper;
-        private readonly UsersContext _context;
-        public UsersController(IMapper mapper, UsersContext context)
+        private readonly BusinessContext _businessContext;
+        public UsersController(IMapper mapper, BusinessContext businessContext)
         {
             _mapper = mapper;
-            _context = context;
+            _businessContext = businessContext;
         }
 
         [HttpPost("register")]
@@ -28,17 +28,18 @@ namespace ExoAPI.Controllers
         {
             User user = _mapper.Map<User>(dto);
             CreatePasswordHash(dto.Password, out  byte [] passwordHash,out byte[]passwordSalt);
-            user.Name = dto.Name;
             user.PasswordHash = passwordHash;
-            user.passwordSalt = passwordSalt; 
-            return Ok(user);
+            user.passwordSalt = passwordSalt;
+            _businessContext.Users.Add(user);
+            _businessContext.SaveChanges();
+            return Ok(dto);
         }
 
         [HttpPost("login/{name}")]
         public IActionResult Login(string name)
         {
             //User user = _mapper.Map<User>();
-            if (_context.GetByName(name).Name != name)
+            if (_businessContext.Users.First(x => x.Name == name).Name != name)
             {
                 return BadRequest("user not found");
             }
@@ -55,7 +56,7 @@ namespace ExoAPI.Controllers
         [HttpGet("GetByName/{name}")]
         public IActionResult FindUser(string name)
         {
-            return Ok(_mapper.Map<UserDto>(_context.GetByName(name)));
+            return Ok(_mapper.Map<UserDto>(_businessContext.Users.First(x=> x.Name == name)));
         }
     }
 }
