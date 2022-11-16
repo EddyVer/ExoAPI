@@ -7,6 +7,6 @@ namespace ExoAPI.Dto
         public int Id { get; set; }
         public string Name { get; set; }
         public string Password { get; set; }
-        public Grades Grade { get; set; }
+        public string Grade { get; set; }
     }
 }

@@ -7,6 +7,6 @@ namespace ExoAPI.Entitie
         public string Name { get; set; }
         public byte[] PasswordHash { get; set; }
         public byte[] passwordSalt { get; set; }
-        public Grades Grade { get; set; }
+        public string Grade { get; set; }
     }
 }
