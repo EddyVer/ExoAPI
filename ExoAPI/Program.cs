@@ -4,6 +4,7 @@ using ExoAPI.Context;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using ExoAPI.Service.UserService;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.Filters;
 using ExoAPI.Service.UserService;

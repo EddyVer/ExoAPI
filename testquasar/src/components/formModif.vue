@@ -1,5 +1,5 @@
 <template>
-  <div class="row">
+  <div class="row rotate-45">
     <q-input v-model="modif.origin" />
     <q-input v-model="modif.name" />
     <q-input type="number" v-model="modif.quantite" />

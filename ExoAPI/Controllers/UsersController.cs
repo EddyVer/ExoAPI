@@ -38,7 +38,7 @@ namespace ExoAPI.Controllers
             return Ok(userName);
         }
         [HttpPost("register")]
-        public IActionResult Register(UserDto dto)
+        public async Task<ActionResult<string>> Register(UserDto dto)
         {
             User user = _mapper.Map<User>(dto);
             CreatePasswordHash(dto.Password, out  byte [] passwordHash,out byte[]passwordSalt);
@@ -51,7 +51,7 @@ namespace ExoAPI.Controllers
         }
 
         [HttpPost("login")]
-        public IActionResult Login(UserDto dto)
+        public async Task<ActionResult<string>> Login(UserDto dto)
         {
             User user = _businessContext.Users.First(x => x.Name == dto.Name);
             if ( user.Name != dto.Name )
