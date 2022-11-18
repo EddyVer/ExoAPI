@@ -16,7 +16,7 @@ namespace ExoAPI.Service.UserService
             {
                 result = _httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.Name);
             }
-            return result;
+            return result; 
         }
     }
 }
