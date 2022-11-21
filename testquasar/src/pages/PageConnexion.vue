@@ -1,49 +1,17 @@
 <template>
   <q-page padding>
     <q-card class="connexion">
-      <q-tabs
-        v-model="tab"
-        class="text-grey"
-        active-color="primary"
-        indicator-color="primary"
-        narrow-indicator
-      >
-        <q-tab name="connexion" label="Se connecter" />
-        <q-tab name="enregistrement" label="Créer un compte" />
-      </q-tabs>
-
       <q-separator />
 
       <q-tab-panels v-model="tab" animated>
         <q-tab-panel name="connexion">
-          <div class="text-h6">Se connecter</div>
-          <q-div class="row vertical-middle" v-if="!user">
-            <q-input placeholder="Name" v-model="name" />
-            <q-input
-              placeholder="Password"
-              type="password"
-              v-model="password"
-            />
-            <q-btn label="Login" @click="getUser"></q-btn>
-          </q-div>
+          <q-tab-panel class="text-h6">Se connecter</q-tab-panel>
+          <connexion-form />
         </q-tab-panel>
 
         <q-tab-panel name="enregistrement">
-          <div class="text-h6">Créer un compte</div>
-          <q-div class="row" v-if="!user">
-            <q-input placeholder="Name" v-model="name" />
-            <q-input
-              placeholder="Password"
-              type="password"
-              v-model="password"
-            />
-            <q-input
-              placeholder="repeat password"
-              type="password"
-              v-model="password"
-            />
-            <q-btn label="sign up" @click="getUser"></q-btn>
-          </q-div>
+          <q-tab-panel class="text-h6">Créer un compte</q-tab-panel>
+          <register-form />
         </q-tab-panel>
       </q-tab-panels>
     </q-card>
@@ -51,12 +19,19 @@
 </template>
 
 <script>
+//import formData from 'src/components/formAdd.vue';
+import ConnexionForm from 'src/components/Connexion/ConnexionForm.vue';
+import RegisterForm from 'src/components/Connexion/RegisterForm.vue';
 export default {
   name: 'PageConnexion',
   data() {
     return {
       tab: 'connexion',
     };
+  },
+  components: {
+    ConnexionForm,
+    RegisterForm,
   },
 };
 </script>

@@ -8,5 +8,8 @@ namespace ExoAPI.Dto
         public string Name { get; set; }
         public string Password { get; set; }
         public string Grade { get; set; }
+        public string RefreshToken { get; set; } = string.Empty;
+        public DateTime TokenCreated { get; set; }
+        public DateTime TokenExpired { get; set; }
     }
 }
