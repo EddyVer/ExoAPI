@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.IdentityModel.Tokens;
+using ExoAPI.Token;
 
 namespace ExoAPI.Controllers
 { 
@@ -62,10 +63,57 @@ namespace ExoAPI.Controllers
             {
                 return BadRequest("password not correct");
             }
-            string token = CreateToken(user);
+            dto.Name= user.Name;
+            dto.Grade= user.Grade;
+            string token = CreateToken(dto);
+
+            var refreshToken = GenerateRefreshToken();
+            SetRefreshToken(refreshToken,dto);    
             return Ok(token);
         }
-        private string CreateToken(User user)
+        [HttpPost("refresh-token")]
+        public async Task<ActionResult<string>> RefreshToken(UserDto dto)
+        {
+
+            var refreshToken = Request.Cookies["refreshToken"];
+            if (dto.RefreshToken.Equals(refreshToken))
+            {
+                return Unauthorized("Invalid Refresh Token");
+            }
+            //else if (dto.TokenExpires < DateTime.Now)
+            //{
+            //    return Unauthorized("Token expired");
+            //}
+
+            string token = CreateToken(dto);
+            var newRefreshToken = GenerateRefreshToken();
+            SetRefreshToken(newRefreshToken,dto);
+            return Ok(token);
+        }
+        private  RefreshToken GenerateRefreshToken()
+        {
+            var refreshToken = new RefreshToken
+            {
+                Token = Convert.ToBase64String(RandomNumberGenerator.GetBytes(64)),
+                Expires = DateTime.Now.AddDays(2),
+                Created= DateTime.Now
+            };
+            return refreshToken;
+        }
+        private void SetRefreshToken(RefreshToken newRefreshToken, UserDto dto)
+        {
+            var cookieOptions = new CookieOptions
+            {
+                HttpOnly = true,
+                Expires = newRefreshToken.Expires,
+            };
+            Response.Cookies.Append("refreshToken",newRefreshToken.Token,cookieOptions);
+            dto.RefreshToken = newRefreshToken.Token;
+            dto.DateCreated = newRefreshToken.Created;
+            dto.TokenExpires = newRefreshToken.Expires;
+
+        }
+        private string CreateToken(UserDto user)
         {
             List<Claim> claims = new List<Claim> { 
                 new Claim(ClaimTypes.Name , user.Name),
@@ -74,6 +122,8 @@ namespace ExoAPI.Controllers
             var key = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(_configuration.GetSection("AppSettings:Token").Value));
             var cred = new SigningCredentials(key, SecurityAlgorithms.HmacSha256Signature);
             var token = new JwtSecurityToken(
+                user.Name,
+                user.Grade,
                 claims: claims,
                 expires: DateTime.Now.AddDays(1),
                 signingCredentials:cred
@@ -103,4 +153,11 @@ namespace ExoAPI.Controllers
             return Ok(_mapper.Map<UserDto>(_businessContext.Users.First(x=> x.Name == name)));
         }
     }
+
+    //internal class RefreshToken
+    //{
+    //    public string Token { get; set; }
+    //    public DateTime Expires { get; set; }
+    //    public DateTime Created { get; set; }
+    //}
 }

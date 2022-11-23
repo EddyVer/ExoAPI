@@ -1,7 +1,8 @@
 import { api } from 'boot/axios';
+//import { state } from 'fs';
 //import { stat } from 'fs';
 import jwt_decode from 'jwt-decode';
-//import { Loading, LocalStorage } from 'quasar';
+import { Loading, LocalStorage } from 'quasar';
 
 // State : données du magasin
 const state = {
@@ -19,8 +20,8 @@ const mutations = {
   },
   setToken(state, token) {
     const decriptToken = jwt_decode(token);
-    //state.token = decriptToken;
-    console.log(decriptToken);
+    state.user = decriptToken.iss;
+    state.token = token;
   },
 };
 
@@ -33,7 +34,7 @@ const actions = {
     api
       .post('/Users/register', form)
       .then(function (response) {
-        commit();
+        commit('setUser', response.data.name);
         console.log(response.data.name);
       })
       .catch(function (error) {
@@ -47,7 +48,11 @@ const actions = {
         api.defaults.headers.common['Authorization'] =
           'bearer ' + response.data;
         commit('setToken', response.data);
-        //console.log(response.data);
+        LocalStorage.set('user', state.user);
+        LocalStorage.set('token', state.token);
+        this.$router.push('/');
+        Loading.hide();
+        console.log(response.data);
       })
       .catch(function (error) {
         console.log(error.response);

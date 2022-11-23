@@ -2,8 +2,6 @@
   <!-- Not Use -->
   <q-page padding>
     <q-card class="connexion">
-      <q-separator />
-
       <q-tab-panels v-model="tab" animated>
         <q-tab-panel name="connexion">
           <q-tab-panel class="text-h6">Se connecter</q-tab-panel>

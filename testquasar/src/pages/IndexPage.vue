@@ -16,13 +16,17 @@
       <q-btn label="delete" color="primary" @click="deleteProduct" />
     </div>
   </q-div> -->
-  <q-page class="row items-center justify-evenly">
-    <q-p v-for="data in datas" :key="data.name">
-      {{ data.name }}
-      {{ data.quantite }}
-    </q-p>
-    <q-div >
-      {{ weather}}
+  <q-page class="items-center">
+    <q-div class="row items-center justify-evenly">
+      <q-p v-for="data in datas" :key="data.name">
+        {{ data.name }}
+        {{ data.quantite }}
+      </q-p>
+    </q-div>
+    <q-div class="row fixed-center items-center justify-evenly">
+      <q-p v-for="item in weather" :key="item.tempertureC">
+        {{ item.summary }}
+      </q-p>
     </q-div>
   </q-page>
 </template>
