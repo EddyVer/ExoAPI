@@ -21,6 +21,9 @@
       {{ data.name }}
       {{ data.quantite }}
     </q-p>
+    <q-div >
+      {{ weather}}
+    </q-div>
   </q-page>
 </template>
 
@@ -28,6 +31,7 @@
 import { defineComponent, ref } from 'vue';
 import { ProductDto } from 'src/models/product';
 import { User } from 'src/models/User';
+import { Weathers } from 'src/models/weather';
 // import formModif from 'src/components/formModif.vue';
 // import formData from 'src/components/formAdd.vue';
 export default defineComponent({
@@ -38,6 +42,7 @@ export default defineComponent({
   },
   created() {
     void this.firstApiCall();
+    void this.callAuthor();
   },
   setup() {
     return {
@@ -49,9 +54,14 @@ export default defineComponent({
       user: ref<User>(),
       name: '',
       password: '',
+      weather: ref<Weathers[]>([]),
     };
   },
   methods: {
+    async callAuthor() {
+      const resp = await this.$api.get('/WeatherForecast');
+      this.weather = resp.data;
+    },
     async firstApiCall() {
       const response = await this.$api.get('/products/ShowStock');
       this.datas = response.data;

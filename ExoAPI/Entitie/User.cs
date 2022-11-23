@@ -8,8 +8,5 @@ namespace ExoAPI.Entitie
         public byte[] PasswordHash { get; set; }
         public byte[] passwordSalt { get; set; }
         public string Grade { get; set; }
-        public string RefreshToken { get; set; } = string.Empty;
-        public DateTime TokenCreated { get; set; }
-        public DateTime TokenExpired { get; set; }
     }
 }

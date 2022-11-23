@@ -38,6 +38,7 @@ export default {
     submitForm() {
       this.connectUser(this.form);
     },
+    
   },
   // validateEmail(email) {
   //   // Source : https://stackoverflow.com/questions/46155/how-to-validate-an-email-address-in-javascript
