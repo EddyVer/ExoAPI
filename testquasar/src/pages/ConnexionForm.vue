@@ -23,6 +23,7 @@
 import { mapActions } from 'vuex';
 export default {
   name: 'ConnexionForm',
+  props: ['user'],
   data() {
     return {
       form: {
@@ -38,7 +39,12 @@ export default {
     submitForm() {
       this.connectUser(this.form);
     },
-    
+    async getUser() {
+      const resp = await this.$api.get(
+        `GetByName/${this.form.name}/${this.form.password}`
+      );
+      return resp.data;
+    },
   },
   // validateEmail(email) {
   //   // Source : https://stackoverflow.com/questions/46155/how-to-validate-an-email-address-in-javascript

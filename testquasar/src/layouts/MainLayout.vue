@@ -5,9 +5,14 @@
         <q-toolbar-title class="absolute-center"> Namezine </q-toolbar-title>
         <q-tabs class="absolute-right">
           <q-btn to="/" flat label="Home" class="" />
-          <q-btn v-if="user" label="user.name" />
-          <q-btn name="enregistrement" flat to="/sign" label="Sign Up" />
-          <q-btn name="connexion" flat to="/login" label="Login" />
+          <q-div v-if="user">
+            <q-p>{{ user }}</q-p>
+            <q-btn @click="disconnectUser" flat label="Logout"></q-btn>
+          </q-div>
+          <q-div v-else>
+            <q-btn name="enregistrement" flat to="/sign" label="Sign Up" />
+            <q-btn name="connexion" flat to="/login" label="Login" />
+          </q-div>
         </q-tabs>
       </q-toolbar>
     </q-header>
@@ -19,24 +24,22 @@
 </template>
 
 <script lang="ts">
-import { User } from 'src/models/User';
-import { defineComponent, ref } from 'vue';
+//import { LocalStorage } from 'quasar';
+import { mapState, mapActions } from 'vuex';
 
-export default defineComponent({
+export default {
   name: 'MainLayout',
-
-  components: {},
+  computed: {
+    ...mapState('auth', ['user']),
+  },
 
   setup() {
-    const leftDrawerOpen = ref(false);
-
     return {
-      user: ref<User>(),
-      leftDrawerOpen,
-      toggleLeftDrawer() {
-        leftDrawerOpen.value = !leftDrawerOpen.value;
-      },
+      leftDrawerOpen: false,
     };
   },
-});
+  methods: {
+    ...mapActions('auth', ['disconnectUser']),
+  },
+};
 </script>

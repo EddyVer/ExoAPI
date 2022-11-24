@@ -2,11 +2,12 @@ import { api } from 'boot/axios';
 //import { state } from 'fs';
 //import { stat } from 'fs';
 import jwt_decode from 'jwt-decode';
-import { Loading, LocalStorage } from 'quasar';
+import { Loading, LocalStorage, TouchRepeat } from 'quasar';
 
 // State : données du magasin
 const state = {
   user: null,
+  role: null,
   token: null,
 };
 
@@ -19,8 +20,14 @@ const mutations = {
     state.user = user;
   },
   setToken(state, token) {
-    const decriptToken = jwt_decode(token);
-    state.user = decriptToken.iss;
+    if (token != null) {
+      const decriptToken = jwt_decode(token);
+      state.user = decriptToken.iss;
+      state.role = decriptToken.aud;
+    } else {
+      state.user = token;
+      state.role = token;
+    }
     state.token = token;
   },
 };
@@ -35,7 +42,6 @@ const actions = {
       .post('/Users/register', form)
       .then(function (response) {
         commit('setUser', response.data.name);
-        console.log(response.data.name);
       })
       .catch(function (error) {
         console.log(error.response);
@@ -52,11 +58,20 @@ const actions = {
         LocalStorage.set('token', state.token);
         this.$router.push('/');
         Loading.hide();
-        console.log(response.data);
       })
       .catch(function (error) {
         console.log(error.response);
       });
+  },
+  disconnectUser({ commit }, state) {
+    Loading.show();
+    // const authorazi = {
+    //   headers: { Authorization: 'bearer ' + state.token },
+    // };
+    commit('setToken', null);
+    LocalStorage.clear();
+    this.$router.push('/');
+    Loading.hide();
   },
 };
 

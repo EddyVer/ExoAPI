@@ -19,7 +19,7 @@ public class WeatherForecastController : ControllerBase
         _logger = logger;
     }
 // 
-    [HttpGet,Authorize(Roles = "user")]
+    [HttpGet,Authorize(Roles = "Admin")]
     public IEnumerable<WeatherForecast> Get()
     {
         return Enumerable.Range(1, 5).Select(index => new WeatherForecast

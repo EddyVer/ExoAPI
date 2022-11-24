@@ -1,29 +1,29 @@
 <template>
-  <!-- <q-div> -->
-  <!-- <q-btn @click="show">form Add Product</q-btn>
-    <div>
-      <form-data v-if="formNewProduct"></form-data>
-    </div>
-    <div class="row">
-      <q-input v-model="dataId" />
-      <q-btn label="search" color="primary" @click="getDataById" />
-    </div>
-    <div v-if="modifData">
-      <formModif :modifData="modifData"></formModif>
-    </div>
-    <div class="row">
-      <q-input type="number" v-model="dataId" />
-      <q-btn label="delete" color="primary" @click="deleteProduct" />
-    </div>
-  </q-div> -->
   <q-page class="items-center">
+    <q-div v-if="user != null">
+      <q-btn @click="show">form Add Product</q-btn>
+      <div>
+        <form-data v-if="formNewProduct"></form-data>
+      </div>
+      <div class="row">
+        <q-input v-model="dataId" />
+        <q-btn label="search" color="primary" @click="getDataById" />
+      </div>
+      <div v-if="modifData">
+        <formModif :modifData="modifData"></formModif>
+      </div>
+      <div v-if="role != 'Admin'" class="row">
+        <q-input type="number" v-model="dataId" />
+        <q-btn label="delete" color="primary" @click="deleteProduct" />
+      </div>
+    </q-div>
     <q-div class="row items-center justify-evenly">
       <q-p v-for="data in datas" :key="data.name">
         {{ data.name }}
         {{ data.quantite }}
       </q-p>
     </q-div>
-    <q-div class="row fixed-center items-center justify-evenly">
+    <q-div v-if="user" class="row fixed-center justify-evenly">
       <q-p v-for="item in weather" :key="item.tempertureC">
         {{ item.summary }}
       </q-p>
@@ -36,17 +36,24 @@ import { defineComponent, ref } from 'vue';
 import { ProductDto } from 'src/models/product';
 import { User } from 'src/models/User';
 import { Weathers } from 'src/models/weather';
-// import formModif from 'src/components/formModif.vue';
-// import formData from 'src/components/formAdd.vue';
+//import { LocalStorage } from 'quasar';
+import { mapState } from 'vuex';
+//import { useQuasar } from 'quasar';
+import formModif from 'src/components/formModif.vue';
+import formData from 'src/components/formAdd.vue';
 export default defineComponent({
   name: 'IndexPage',
+  computed: {
+    ...mapState('auth', ['user', 'role']),
+  },
   components: {
-    // formData,
-    // formModif,
+    formData,
+    formModif,
   },
   created() {
     void this.firstApiCall();
     void this.callAuthor();
+    this.log();
   },
   setup() {
     return {
@@ -55,7 +62,7 @@ export default defineComponent({
       dataId: 0,
       formNewProduct: ref<boolean>(false),
       formModif: ref<boolean>(false),
-      user: ref<User>(),
+      userInfo: ref<User>(),
       name: '',
       password: '',
       weather: ref<Weathers[]>([]),
@@ -82,14 +89,17 @@ export default defineComponent({
       );
       return resp;
     },
-    async getUser() {
-      const resp = await this.$api.get(
-        `GetByName/${this.name}/${this.password}`
-      );
-      this.user = resp.data;
-    },
+    // async getUser() {
+    //   const resp = await this.$api.get(
+    //     `GetByName/${this.name}/${this.password}`
+    //   );
+    //   this.user = resp.data;
+    // },
     show() {
       this.formNewProduct = !this.formNewProduct;
+    },
+    log() {
+      console.log(this.role);
     },
   },
 });
