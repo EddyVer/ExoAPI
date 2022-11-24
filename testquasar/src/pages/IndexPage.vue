@@ -12,7 +12,7 @@
       <div v-if="modifData">
         <formModif :modifData="modifData"></formModif>
       </div>
-      <div v-if="role != 'Admin'" class="row">
+      <div v-if="role == 'Admin'" class="row">
         <q-input type="number" v-model="dataId" />
         <q-btn label="delete" color="primary" @click="deleteProduct" />
       </div>
@@ -99,7 +99,7 @@ export default defineComponent({
       this.formNewProduct = !this.formNewProduct;
     },
     log() {
-      console.log(this.role);
+      console.log(this.user);
     },
   },
 });

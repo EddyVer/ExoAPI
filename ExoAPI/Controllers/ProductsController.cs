@@ -4,6 +4,7 @@ using ExoAPI.Dto;
 using ExoAPI.Entitie;
 using ExoAPI.Mapping;
 using ExoAPI.Type;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ExoAPI.Controllers;
@@ -21,7 +22,7 @@ public class ProductsController : ControllerBase
         _businessContext = businessContext;
     }
 
-    [HttpGet("ShowStock")]
+    [HttpGet("ShowStock"), Authorize]
     public IActionResult ShowStock()
     {
         return Ok(_mapper.Map<List<ProductDto>>(_businessContext.Products.ToList()));

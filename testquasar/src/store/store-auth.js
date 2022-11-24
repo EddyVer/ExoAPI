@@ -2,7 +2,7 @@ import { api } from 'boot/axios';
 //import { state } from 'fs';
 //import { stat } from 'fs';
 import jwt_decode from 'jwt-decode';
-import { Loading, LocalStorage, TouchRepeat } from 'quasar';
+import { Loading, LocalStorage } from 'quasar';
 
 // State : données du magasin
 const state = {
@@ -56,6 +56,7 @@ const actions = {
         commit('setToken', response.data);
         LocalStorage.set('user', state.user);
         LocalStorage.set('token', state.token);
+        LocalStorage.set('role', state.role);
         this.$router.push('/');
         Loading.hide();
       })
@@ -63,13 +64,16 @@ const actions = {
         console.log(error.response);
       });
   },
-  disconnectUser({ commit }, state) {
+  disconnectUser({ commit }) {
     Loading.show();
     // const authorazi = {
     //   headers: { Authorization: 'bearer ' + state.token },
     // };
     commit('setToken', null);
-    LocalStorage.clear();
+    LocalStorage.remove('user');
+    LocalStorage.remove('token');
+    LocalStorage.remove('role');
+    //LocalStorage.clear();
     this.$router.push('/');
     Loading.hide();
   },
