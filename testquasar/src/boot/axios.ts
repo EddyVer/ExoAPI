@@ -1,5 +1,6 @@
 import { boot } from 'quasar/wrappers';
 import axios, { AxiosInstance } from 'axios';
+import interceptor from 'src/api/interceptor';
 
 declare module '@vue/runtime-core' {
   interface ComponentCustomProperties {
@@ -22,9 +23,9 @@ const api = axios.create({
     'Content-Type': 'application/json',
   },
 });
-
-export default boot(({ app }) => {
+export default boot(({ app, router }) => {
   // for use inside Vue files (Options API) through this.$axios and this.$api
+  interceptor(api, router);
 
   app.config.globalProperties.$axios = axios;
   // ^ ^ ^ this will allow you to use this.$axios (for Vue Options API form)

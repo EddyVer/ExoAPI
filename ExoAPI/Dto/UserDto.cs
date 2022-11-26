@@ -1,4 +1,5 @@
-﻿using ExoAPI.Type;
+﻿using ExoAPI.Entitie;
+using ExoAPI.Type;
 
 namespace ExoAPI.Dto
 {
@@ -8,6 +9,7 @@ namespace ExoAPI.Dto
         public string Name { get; set; }
         public string Password { get; set; }
         public string Grade { get; set; }
+        public List<EntrepotDto> Entrepots { get; set; }
         public string RefreshToken { get; set; } = string.Empty;
         public DateTime DateCreated { get; set; }
         public DateTime TokenExpires { get; set; }

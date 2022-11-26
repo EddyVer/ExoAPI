@@ -48,6 +48,10 @@ const actions = {
       });
   },
   connectUser({ commit }, form) {
+    // const token = (request) => {
+    //   request.headers.Authorization = `bearer ${response.data}`;
+    //   return request;
+    // };
     api
       .post('/Users/login', form)
       .then((response) => {

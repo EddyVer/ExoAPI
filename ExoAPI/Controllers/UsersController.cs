@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.IdentityModel.Tokens;
 using ExoAPI.Token;
+using Microsoft.EntityFrameworkCore;
 
 namespace ExoAPI.Controllers
 { 
@@ -38,6 +39,18 @@ namespace ExoAPI.Controllers
             string userName = _userService.GetUserName();
             return Ok(userName);
         }
+
+        [HttpPost("modifPassword/{id}"), Authorize]
+        public async Task<ActionResult<string>> ModifPassword(int id,[FromBody] UserDto dto)
+        {
+            User user = _businessContext.Users.First(x => x.Id == id);
+            CreatePasswordHash(dto.Password, out byte [] passwordHash, out byte[]passwordSalt);
+            user.PasswordHash = passwordHash;
+            user.passwordSalt = passwordSalt;
+            _businessContext.Users.Update(user);
+            _businessContext.SaveChanges();
+            return Ok(_mapper.Map<UserDto>(user));
+        }
         [HttpPost("register")]
         public async Task<ActionResult<string>> Register(UserDto dto)
         {
@@ -51,20 +64,36 @@ namespace ExoAPI.Controllers
             return Ok(dto);
         }
 
-        [HttpPost("login")]
-        public async Task<ActionResult<string>> Login(UserDto dto)
+        [HttpPost("addEntrepotUser/{id}"), Authorize]
+        public IActionResult NewEntrepot(int id, [FromBody]EntrepotDto dto)
         {
-            User user = _businessContext.Users.First(x => x.Name == dto.Name);
-            if ( user.Name != dto.Name )
+            Entrepot entrepot = _mapper.Map<Entrepot>(dto);
+            User user = _businessContext.Users.First(x => x.Id == id);
+            if (user.Entrepots == null)
             {
-                return BadRequest("user not found");
+                user.Entrepots = new List<Entrepot>();
             }
-            if (!CheckPassword(user, dto.Password))
+            user.Entrepots.Add(entrepot);
+            _businessContext.Users.Update(user);
+            _businessContext.SaveChanges();
+            UserDto userDto = _mapper.Map<UserDto>(user);
+            return Ok(userDto);
+        }
+        [HttpPost("login")]
+        public async Task<ActionResult<string>> Login([FromBody] LoginDto loginDto)
+        {
+            User user = await _businessContext.Users.FirstOrDefaultAsync(x => x.Name == loginDto.Username);
+            if (user == null)
+            {
+                return NotFound();
+            }
+            if (!CheckPassword(user, loginDto.Password))
             {
                 return BadRequest("password not correct");
             }
-            dto.Name= user.Name;
-            dto.Grade= user.Grade;
+            string name= user.Name;
+
+            UserDto dto = _mapper.Map<UserDto>(user);
             string token = CreateToken(dto);
 
             var refreshToken = GenerateRefreshToken();
@@ -154,10 +183,5 @@ namespace ExoAPI.Controllers
         }
     }
 
-    //internal class RefreshToken
-    //{
-    //    public string Token { get; set; }
-    //    public DateTime Expires { get; set; }
-    //    public DateTime Created { get; set; }
-    //}
+
 }

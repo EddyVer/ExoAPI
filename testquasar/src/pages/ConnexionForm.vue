@@ -3,7 +3,12 @@
     <q-card class="connexion">
       <q-tab-panel class="text-h6">Login</q-tab-panel>
       <q-form @submit.prevent="submitForm">
-        <q-input outlined v-model="form.name" label="Name" class="q-my-md" />
+        <q-input
+          outlined
+          v-model="form.username"
+          label="Name"
+          class="q-my-md"
+        />
         <q-input
           type="password"
           outlined
@@ -27,10 +32,8 @@ export default {
   data() {
     return {
       form: {
-        id: '0',
-        name: '',
+        username: '',
         password: '',
-        grade: 'u',
       },
     };
   },
@@ -41,7 +44,7 @@ export default {
     },
     async getUser() {
       const resp = await this.$api.get(
-        `GetByName/${this.form.name}/${this.form.password}`
+        `login/${this.form.name}/${this.form.password}`
       );
       return resp.data;
     },

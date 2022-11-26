@@ -24,6 +24,14 @@ namespace ExoAPI.Controllers
         {
             return Ok(_mapper.Map<List<EntrepotDto>>(_businessContext.Entrepots.Include(x => x.Products).ToList()));
         }
+
+        [HttpGet("userEntrepot/{id}")]
+        public async Task<ActionResult<string>> ShowEntrepotUser(int id)
+        {
+            User user = _businessContext.Users.Include(x => x.Entrepots).First(x => x.Id == id);
+            UserDto dto = _mapper.Map<UserDto>(user);
+            return Ok(dto.Entrepots);
+        }
         [HttpGet("ById/{id}")]
         public IActionResult ShowById(int id)
         {
