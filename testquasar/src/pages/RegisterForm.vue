@@ -46,10 +46,8 @@ export default {
     return {
       confPassword: '',
       form: {
-        id: '0',
         name: '',
         password: '',
-        grade: 'u',
       },
     };
   },

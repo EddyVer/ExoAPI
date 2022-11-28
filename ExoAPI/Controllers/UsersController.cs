@@ -14,7 +14,10 @@ using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.IdentityModel.Tokens;
 using ExoAPI.Token;
 using Microsoft.EntityFrameworkCore;
-
+using Org.BouncyCastle.Asn1.Ocsp;
+using System.Net;
+using System.Net.Http.Headers;
+using Microsoft.AspNetCore.StaticFiles;
 namespace ExoAPI.Controllers
 { 
     [ApiController]
@@ -52,10 +55,11 @@ namespace ExoAPI.Controllers
             return Ok(_mapper.Map<UserDto>(user));
         }
         [HttpPost("register")]
-        public async Task<ActionResult<string>> Register(UserDto dto)
+        public async Task<ActionResult<string>> Register(SignUPDto dto)
         {
-            User user = _mapper.Map<User>(dto);
+            User user = new User();
             CreatePasswordHash(dto.Password, out  byte [] passwordHash,out byte[]passwordSalt);
+            user.Name = dto.Name;
             user.PasswordHash = passwordHash;
             user.passwordSalt = passwordSalt;
             user.Grade = "user";
@@ -100,6 +104,7 @@ namespace ExoAPI.Controllers
             SetRefreshToken(refreshToken,dto);    
             return Ok(token);
         }
+
         [HttpPost("refresh-token")]
         public async Task<ActionResult<string>> RefreshToken(UserDto dto)
         {
@@ -140,7 +145,6 @@ namespace ExoAPI.Controllers
             dto.RefreshToken = newRefreshToken.Token;
             dto.DateCreated = newRefreshToken.Created;
             dto.TokenExpires = newRefreshToken.Expires;
-
         }
         private string CreateToken(UserDto user)
         {
@@ -181,6 +185,15 @@ namespace ExoAPI.Controllers
         {
             return Ok(_mapper.Map<UserDto>(_businessContext.Users.First(x=> x.Name == name)));
         }
+        [HttpGet("files/{name}")]
+        public async Task<ActionResult> DownloadFile(string name)
+        {
+            var filePath = $"{name}.txt"; // Here, you should validate the request and the existance of the file.
+
+            var bytes = await System.IO.File.ReadAllBytesAsync(filePath);
+            return File(bytes, "text/plain", Path.GetFileName(filePath));
+        }
+
     }
 
 

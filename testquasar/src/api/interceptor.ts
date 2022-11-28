@@ -1,7 +1,7 @@
 // import { AxiosInstance, AxiosResponse } from 'axios'
 //import useStore from 'src/store/auth-custom'
 import { Router } from 'vue-router';
-import { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
+import { AxiosInstance, AxiosRequestConfig } from 'axios';
 
 interface IAxiosError {
   response: IAxiosResponse;
@@ -10,7 +10,7 @@ interface IAxiosError {
 interface IAxiosResponse {
   status: number;
   config: AxiosRequestConfig;
-  data: any;
+  //data: any;
 }
 export default (http: AxiosInstance, router: Router): void => {
   http.interceptors.request.use((config: AxiosRequestConfig) => {

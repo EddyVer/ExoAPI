@@ -99,7 +99,7 @@ export default defineComponent({
       this.formNewProduct = !this.formNewProduct;
     },
     log() {
-      console.log(this.user);
+      console.log(this.role);
     },
   },
 });

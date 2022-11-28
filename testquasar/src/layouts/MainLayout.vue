@@ -6,7 +6,7 @@
         <q-tabs class="absolute-right">
           <q-btn to="/" flat label="Home" class="" />
           <q-div v-if="user">
-            <q-p>{{ user }}</q-p>
+            <q-btn flat>{{ user }}</q-btn>
             <q-btn @click="disconnectUser" flat label="Logout"></q-btn>
           </q-div>
           <q-div v-else>

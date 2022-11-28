@@ -30,6 +30,10 @@ public class ProductsController : ControllerBase
     [HttpGet("GetById/{id}")]
     public IActionResult GetProductID(int id)
     {
+        if (id == 0)
+        {
+            return BadRequest("product not found");
+        }
         return Ok(_mapper.Map<ProductDto>(_businessContext.Products.First(x=> x.Id==id)));
     }
     [HttpPost("addProduct")]
