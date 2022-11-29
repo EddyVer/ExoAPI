@@ -1,6 +1,7 @@
 <template>
   <q-page class="items-center">
     <q-div v-if="user != null">
+      <q-btn @click="DlFile" download label="Download File" />
       <q-btn @click="show">form Add Product</q-btn>
       <div>
         <form-data v-if="formNewProduct"></form-data>
@@ -41,6 +42,8 @@ import { mapState } from 'vuex';
 //import { useQuasar } from 'quasar';
 import formModif from 'src/components/formModif.vue';
 import formData from 'src/components/formAdd.vue';
+//import { response } from 'express';
+import { exportFile } from 'quasar';
 export default defineComponent({
   name: 'IndexPage',
   computed: {
@@ -88,6 +91,16 @@ export default defineComponent({
         `products/deleteProduct/${this.dataId}`
       );
       return resp;
+    },
+    async DlFile() {
+      this.$api
+        .get('Users/files/test', { responseType: 'blob' })
+        .then((response) => {
+          const status = exportFile('test', response.data);
+          if (!status) {
+            console.log('Error: ' + status);
+          }
+        });
     },
     // async getUser() {
     //   const resp = await this.$api.get(
