@@ -1,4 +1,4 @@
-### NuGet Used
+### NuGet Used:
 - Microsoft EntityFramework
 - Microsoft NETCore.App
 - AutoMapper
