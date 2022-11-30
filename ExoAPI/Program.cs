@@ -4,6 +4,7 @@ using ExoAPI.Context;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using ExoAPI.Service.CSVService;
 using ExoAPI.Service.UserService;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.Filters;
@@ -17,6 +18,7 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IExcelService, ExcelService>();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddSwaggerGen(option => {
     option.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme

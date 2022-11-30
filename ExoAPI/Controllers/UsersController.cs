@@ -185,20 +185,7 @@ namespace ExoAPI.Controllers
         {
             return Ok(_mapper.Map<UserDto>(_businessContext.Users.First(x=> x.Name == name)));
         }
-        [HttpGet("files/{name}")]
-        public async Task<FileContentResult> DownloadFile(string name)
-        {
-            string filePath = $"Download/{name}.txt"; // Here, you should validate the request and the existance of the file.
-            var provider = new FileExtensionContentTypeProvider();
-            if (!provider.TryGetContentType(filePath, out var contentType))
-            {
-                contentType = "application/octet-stream";
-            }
-    
-            var bytes = await System.IO.File.ReadAllBytesAsync(filePath);
-            return File(bytes, contentType, Path.GetFileName(filePath));
-        
-        }
+
 
     }
 

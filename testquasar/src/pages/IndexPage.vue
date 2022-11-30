@@ -44,6 +44,7 @@ import formModif from 'src/components/formModif.vue';
 import formData from 'src/components/formAdd.vue';
 //import { response } from 'express';
 import { exportFile } from 'quasar';
+import { response } from 'express';
 export default defineComponent({
   name: 'IndexPage',
   computed: {
@@ -93,14 +94,17 @@ export default defineComponent({
       return resp;
     },
     async DlFile() {
-      this.$api
-        .get('Users/files/test', { responseType: 'blob' })
-        .then((response) => {
-          const status = exportFile('test', response.data);
-          if (!status) {
-            console.log('Error: ' + status);
-          }
+      try {
+        const resp = await this.$api.get('Users/files/test', {
+          responseType: 'blob',
         });
+        const status = exportFile('test', resp.data);
+        if (!status) {
+          console.log('Error: ' + status);
+        }
+      } catch (e) {
+        console.log(e);
+      }
     },
     // async getUser() {
     //   const resp = await this.$api.get(
