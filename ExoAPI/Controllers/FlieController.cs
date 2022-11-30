@@ -1,3 +1,4 @@
+using ExoAPI.Context;
 using ExoAPI.Service.CSVService;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.StaticFiles;
@@ -7,10 +8,12 @@ namespace ExoAPI.Controllers;
 [Route("[Controller]")]
 public class FileController : ControllerBase
 {
+    private readonly BusinessContext _context;
     private readonly IExcelService _excelService;
-    public FileController(IExcelService excelService)
+    public FileController(IExcelService excelService, BusinessContext businessContext)
     {
         _excelService = excelService;
+        _context = businessContext;
     }
     [HttpGet("files/{name}")]
     public async Task<PhysicalFileResult> DownloadFile(string name)
@@ -32,10 +35,12 @@ public class FileController : ControllerBase
         Id= 1,
         Name= "test1"
         },
-        new Test(){ Id= 2,Name= "test2"}
-        }; 
+        new Test(){ Id= 2,Name= "test2"},
+        new Test(){Id=3,Name="test3"}
+        };
+        var list = _context.Products.ToArray();
         //data = data.Replace(" ", ";");
-        _excelService.WriteCSV(test );
+        _excelService.WriteCSV(list );
         return Ok();
     }
 }
