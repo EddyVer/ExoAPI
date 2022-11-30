@@ -2,5 +2,6 @@ namespace ExoAPI.Service.CSVService;
 
 public interface IExcelService
 {
-    public void WriteCSV(string records);
+    //, string records
+    public void WriteCSV<T>(T[] element) ;
 }

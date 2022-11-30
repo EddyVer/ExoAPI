@@ -23,12 +23,24 @@ public class FileController : ControllerBase
         }
        return PhysicalFile(filePath, contentType);
     }
-
-    [HttpGet("{data}")]
-    public async Task<ActionResult> ReadFile(string data)
+    //"{data}"string data data
+    [HttpGet()]
+    public async Task<ActionResult> ReadFile()
     {
+        //var testColumns = data.Split(' ');
+        Test[] test = new[] { new Test(){
+        Id= 1,
+        Name= "test1"
+        },
+        new Test(){ Id= 2,Name= "test2"}
+        }; 
         //data = data.Replace(" ", ";");
-        _excelService.WriteCSV(data);
-        return Ok(data);
+        _excelService.WriteCSV(test );
+        return Ok();
     }
+}
+public class Test
+{
+    public int Id { get; set; }
+    public string Name { get; set; }
 }

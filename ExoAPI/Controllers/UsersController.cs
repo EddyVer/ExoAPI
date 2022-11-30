@@ -185,9 +185,5 @@ namespace ExoAPI.Controllers
         {
             return Ok(_mapper.Map<UserDto>(_businessContext.Users.First(x=> x.Name == name)));
         }
-
-
     }
-
-
 }
