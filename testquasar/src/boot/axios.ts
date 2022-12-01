@@ -1,5 +1,6 @@
 import { boot } from 'quasar/wrappers';
 import axios, { AxiosInstance } from 'axios';
+import interceptor from 'src/api/interceptor';
 
 declare module '@vue/runtime-core' {
   interface ComponentCustomProperties {
@@ -14,10 +15,17 @@ declare module '@vue/runtime-core' {
 // good idea to move this instance creation inside of the
 // "export default () => {}" function below (which runs individually
 // for each client)
-const api = axios.create({ baseURL: 'https://localhost:7059/' });
-
-export default boot(({ app }) => {
+const api = axios.create({
+  baseURL: 'https://localhost:7059/',
+  timeout: 3000,
+  headers: {
+    Accept: 'application/json',
+    'Content-Type': 'application/json',
+  },
+});
+export default boot(({ app, router }) => {
   // for use inside Vue files (Options API) through this.$axios and this.$api
+  interceptor(api, router);
 
   app.config.globalProperties.$axios = axios;
   // ^ ^ ^ this will allow you to use this.$axios (for Vue Options API form)
@@ -27,4 +35,4 @@ export default boot(({ app }) => {
   //       so you can easily perform requests against your app's API
 });
 
-export { api };
+export { axios, api };

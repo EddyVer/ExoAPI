@@ -4,6 +4,7 @@ using MySql.Data.MySqlClient;
 
 namespace ExoAPI.MySqL
 {
+    // just for excemple not used
     public class ConnectBDD
     {
         public static MySqlConnection Connect()

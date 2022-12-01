@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ExoAPI.Controllers;
@@ -17,8 +18,9 @@ public class WeatherForecastController : ControllerBase
     {
         _logger = logger;
     }
+// ,Authorize(Roles = "Moderateur")
 
-    [HttpGet(Name = "GetWeatherForecast")]
+    [HttpGet,Authorize(Roles = "Admin")]
     public IEnumerable<WeatherForecast> Get()
     {
         return Enumerable.Range(1, 5).Select(index => new WeatherForecast
