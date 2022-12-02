@@ -4,6 +4,7 @@
         <TargetFramework>net6.0</TargetFramework>
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
+		<LangVersion>preview</LangVersion>
     </PropertyGroup>
 
     <ItemGroup>
@@ -36,8 +37,10 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Business Access\Business Access.csproj" />
-      <ProjectReference Include="..\Data Access\Data Access.csproj" />
+      <ProjectReference Include="..\Business Access\ExoAPI.Core.csproj" />
+      <ProjectReference Include="..\Data Access\ExoAPI.Application.csproj" />
+      <ProjectReference Include="..\ExoAPI.Entities\ExoAPI.Entities.csproj" />
+      <ProjectReference Include="..\ExoAPI.Infra\ExoAPI.Infra.csproj" />
     </ItemGroup>
 
 </Project>

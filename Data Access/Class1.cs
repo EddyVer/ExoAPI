@@ -1,6 +1,7 @@
-﻿namespace Data_Access
+﻿namespace ExoAPI_Application
 {
-    public class DataAccess
+    public class Class1
     {
+
     }
 }

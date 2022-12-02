@@ -1,6 +1,8 @@
-﻿namespace Business_Access
+﻿namespace ExoAPI_Core
+
 {
-    public class BusinessAccess
+    public class Class1
     {
+
     }
 }
