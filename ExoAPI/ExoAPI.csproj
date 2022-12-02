@@ -32,8 +32,12 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Migrations" />
       <Folder Include="Script" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Business Access\Business Access.csproj" />
+      <ProjectReference Include="..\Data Access\Data Access.csproj" />
     </ItemGroup>
 
 </Project>
