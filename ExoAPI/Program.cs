@@ -1,9 +1,11 @@
 using AutoMapper;
 using ExoAPI.Mapping;
 using ExoAPI.Context;
+using ExoAPI.Context;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using ExoAPI.Application.Context;
 using ExoAPI.Service.CSVService;
 using ExoAPI.Service.UserService;
 using Microsoft.OpenApi.Models;
@@ -46,7 +48,7 @@ builder.Services.AddSingleton<UsersContext>();
 
 builder.Services.AddDbContext<BusinessContext>();
 
-builder.Services.AddAutoMapper(cfg => { cfg.AddProfile<MappingData>(); });
+builder.Services.AddAutoMapper(cfg => {cfg.AddProfile<MappingData>();});
 
 var app = builder.Build();
 

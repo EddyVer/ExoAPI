@@ -1,4 +1,5 @@
 using AutoMapper;
+using ExoAPI.Application.Context;
 using ExoAPI.Context;
 using ExoAPI.Dto;
 using ExoAPI.Entitie;

@@ -1,10 +1,12 @@
 ﻿using ExoAPI.Entitie;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 
-namespace ExoAPI.Context
+namespace ExoAPI.Application.Context
 {
     public class BusinessContext : DbContext
     {
+        private readonly IConfiguration _configuration;
         public DbSet<Product>? Products { get; set; }
         public DbSet<Entrepot>? Entrepots { get; set; }
         public DbSet<User>? Users { get; set; }
@@ -17,6 +19,8 @@ namespace ExoAPI.Context
             string connectionString = _configuration.GetConnectionString("MySqlDatabase");
             optionsBuilder.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
         }
-        private readonly IConfiguration _configuration;
+        
     }
+
+ 
 }

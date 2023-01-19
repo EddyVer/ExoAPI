@@ -19,11 +19,11 @@
           <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
         <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="6.0.11" />
-        <PackageReference Include="Microsoft.Extensions.Configuration" Version="6.0.1" />
+        <PackageReference Include="Microsoft.Extensions.Configuration" Version="7.0.0" />
         <PackageReference Include="Microsoft.Extensions.Hosting" Version="6.0.1" />
         <PackageReference Include="Microsoft.NETCore.App" Version="2.2.8" />
         <PackageReference Include="MySql.Data" Version="8.0.31" />
-        <PackageReference Include="MySqlConnector" Version="2.2.0" />
+        <PackageReference Include="MySqlConnector" Version="2.2.5" />
         <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="6.0.2" />
         <PackageReference Include="Scrutor" Version="4.2.0" />
         <PackageReference Include="Scrutor.AspNetCore" Version="3.3.0" />

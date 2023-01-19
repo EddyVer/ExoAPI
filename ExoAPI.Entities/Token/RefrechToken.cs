@@ -1,4 +1,4 @@
-﻿namespace ExoAPI.Token
+﻿namespace ExoAPI.Entities.Token
 {
     public class RefreshToken
     {

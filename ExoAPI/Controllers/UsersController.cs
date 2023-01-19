@@ -12,11 +12,12 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.IdentityModel.Tokens;
-using ExoAPI.Token;
 using Microsoft.EntityFrameworkCore;
 using Org.BouncyCastle.Asn1.Ocsp;
 using System.Net;
 using System.Net.Http.Headers;
+using ExoAPI.Application.Context;
+using ExoAPI.Entities.Token;
 using Microsoft.AspNetCore.StaticFiles;
 namespace ExoAPI.Controllers
 { 

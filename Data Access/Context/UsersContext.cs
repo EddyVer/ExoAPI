@@ -1,11 +1,6 @@
-﻿using System.Security.Principal;
-using System.Threading;
-using System.Security.Permissions;
-using AutoMapper;
-using ExoAPI.Entitie;
+﻿using AutoMapper;
 using ExoAPI.Dto;
-using ExoAPI.Type;
-using Microsoft.AspNetCore.Authorization;
+using ExoAPI.Entitie;
 
 namespace ExoAPI.Context
 {
